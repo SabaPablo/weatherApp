@@ -1,7 +1,8 @@
-package com.example.saba.weatherapp
+package com.example.saba.weatherapp.views
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.saba.weatherapp.R
 
 class MainActivity : AppCompatActivity() {
 
