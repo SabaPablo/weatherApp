@@ -1,5 +1,6 @@
 package com.example.saba.weatherapp.views
 
+import android.media.Image
 import android.util.Log
 import com.example.saba.weatherapp.application.AppAplication
 import com.example.saba.weatherapp.model.Weather
@@ -14,17 +15,24 @@ class MainPresenter(mainView: MainView) {
     val service : WeatherService? = AppAplication.instance.weatherService;
 
 
-    fun getWeather(lat:Long, lon:Long) {
+    fun  getWeather(lat:Long, lon:Long) {
         var call = service!!.getWeather(lat,lon)
         call.enqueue(object : Callback<Weather>{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-                response!!.body()!!.id
+                renderWeather(response!!.body()!!)
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 Log.v("retrofit", "call failed")
             }
         })
+    }
+
+    private fun renderWeather(weather: Weather) {
+        mainView.renderTemp(weather.main!!.temp)
+        mainView.renderCityName(weather.name)
+        //searchIcon(weather.weather!!.icon)
+        mainView.renderIcon(weather.weather!!.iterator().next().icon!!)
     }
 
 

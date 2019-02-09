@@ -6,14 +6,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="match_parent">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
         <TextView
+            android:layout_weight="2"
+            android:id="@+id/city_name_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Ciudad" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/icon_weather_im"
+            android:layout_width="50px"
+            android:layout_height="50px" />
+        </RelativeLayout>
+    </LinearLayout>
+        <TextView
+            android:id="@+id/temp_city_tv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Hola mundo" />
+            android:text="Temp" />
     </LinearLayout>
-
-
 
 </LinearLayout>
