@@ -1,6 +1,7 @@
 package com.example.saba.weatherapp.application
 
 import android.app.Application
+import com.example.saba.weatherapp.services.IpLocationService
 import com.example.saba.weatherapp.services.WeatherInterceptor
 import com.example.saba.weatherapp.services.WeatherService
 import okhttp3.OkHttpClient
@@ -11,17 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class AppAplication : Application() {
 
 
-    override fun onCreate() {
-        super.onCreate()
-        instance = this
-        weatherService = retrofit.create(WeatherService::class.java)
-    }
-
-
-    companion object {
-        lateinit var instance: AppAplication
-            private set
-    }
 
 
 
@@ -29,13 +19,31 @@ class AppAplication : Application() {
 
 
     var weatherService: WeatherService? = null
-    var retrofit = Retrofit.Builder().apply{
+
+    var ipLocationService: IpLocationService? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+        var retrofitOpenWeather = Retrofit.Builder().apply{
             baseUrl("https://api.openweathermap.org/").
-            addConverterFactory(GsonConverterFactory.create())
+                    addConverterFactory(GsonConverterFactory.create())
             client(apiClient)
         }.build()
+        weatherService = retrofitOpenWeather.create(WeatherService::class.java)
+
+        var retrofitIpLocationService = Retrofit.Builder().apply{
+            addConverterFactory(GsonConverterFactory.create())
+            baseUrl("http://free.ipwhois.io/")
+        }.build()
+        ipLocationService = retrofitIpLocationService.create(IpLocationService::class.java)
+    }
 
 
+    companion object {
+        lateinit var instance: AppAplication
+            private set
+    }
 
 
     /**

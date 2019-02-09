@@ -1,8 +1,5 @@
 package com.example.saba.weatherapp.views
 
-import android.graphics.Bitmap
-import android.media.Image
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -25,7 +22,7 @@ class MainActivity : AppCompatActivity() , MainView {
 
         mainPresenter = MainPresenter(this)
 
-        mainPresenter.getWeather(-42,-65)
+        mainPresenter.getWeatherWithIp()
 
 
 

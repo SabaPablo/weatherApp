@@ -1,9 +1,10 @@
 package com.example.saba.weatherapp.views
 
-import android.media.Image
 import android.util.Log
 import com.example.saba.weatherapp.application.AppAplication
+import com.example.saba.weatherapp.model.Ubication
 import com.example.saba.weatherapp.model.Weather
+import com.example.saba.weatherapp.services.IpLocationService
 import com.example.saba.weatherapp.services.WeatherService
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,17 +14,37 @@ class MainPresenter(mainView: MainView) {
 
     val mainView: MainView = mainView
     val service : WeatherService? = AppAplication.instance.weatherService;
+    val ipLocationService : IpLocationService? = AppAplication.instance.ipLocationService;
 
 
-    fun  getWeather(lat:Long, lon:Long) {
-        var call = service!!.getWeather(lat,lon)
+    fun getWeatherWithIp(){
+        var call = ipLocationService!!.getUbication()
+        call.enqueue(object : Callback<Ubication>{
+            override fun onFailure(call: Call<Ubication>, t: Throwable) {
+                Log.v("retrofit", "ip ubication call failed")
+            }
+
+            override fun onResponse(call: Call<Ubication>, response: Response<Ubication>) {
+                getWeatherByUbication(response.body())
+
+            }
+
+        })
+    }
+
+    private fun getWeatherByUbication(ubication: Ubication?) {
+        getWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble())
+    }
+
+    fun  getWeather(lat: Double?, lon: Double?) {
+        var call = service!!.getWeather(lat!!, lon!!)
         call.enqueue(object : Callback<Weather>{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
                 renderWeather(response!!.body()!!)
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
-                Log.v("retrofit", "call failed")
+                Log.v("retrofit", "weather call failed")
             }
         })
     }
