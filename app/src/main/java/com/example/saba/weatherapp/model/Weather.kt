@@ -8,7 +8,7 @@ class Weather {
     var coords: Coord? = null
     var weather: List<Icons>? = null
     var main: Main? = null
-  //  var wind: Wind? = null
+    var wind: Wind? = null
 
 
 }

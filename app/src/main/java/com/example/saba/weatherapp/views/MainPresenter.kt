@@ -33,6 +33,9 @@ class MainPresenter(mainView: MainView) {
     }
 
     private fun getWeatherByUbication(ubication: Ubication?) {
+        if (ubication != null) {
+            mainView.renderCountryAndProvince(ubication.region, ubication.country)
+        }
         getWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble())
     }
 
@@ -50,10 +53,14 @@ class MainPresenter(mainView: MainView) {
     }
 
     private fun renderWeather(weather: Weather) {
-        mainView.renderTemp(weather.main!!.temp)
+        mainView.renderTemp(weather.main!!.temp!!.toInt())
         mainView.renderCityName(weather.name)
-        //searchIcon(weather.weather!!.icon)
         mainView.renderIcon(weather.weather!!.iterator().next().icon!!)
+        mainView.renderStatusWeather(weather.weather!!.get(0).description)
+        mainView.renderHumidity(weather.main!!.humidity!!.toInt())
+        mainView.renderMinAndMaxTemp(weather.main!!.temp_min!!.toInt(), weather.main!!.temp_max!!.toInt())
+        mainView.velocityWind(weather.wind!!.speed!!.toInt())
+
     }
 
 

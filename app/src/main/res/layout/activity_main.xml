@@ -1,41 +1,115 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_width="match_parent">
-
-    <LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/city_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:text="Ciudad" />
+    <TextView
+        android:id="@+id/country_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:text="Provincia, Pais" />
+    <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/temp_city_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50sp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:text="0°C" />
+
+            <ImageView
+                android:id="@+id/icon_weather_im"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/temp_city_tv"
+                android:padding="10dp" />
+            <TextView
+                android:id="@+id/status_weather_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/temp_city_tv"
+                android:layout_centerHorizontal="true"
+                android:text="estado"/>
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_weight="2"
-            android:id="@+id/city_name_tv"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Ciudad" />
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
+            android:orientation="vertical"
             android:layout_height="wrap_content">
-        <ImageView
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/icon_weather_im"
-            android:layout_width="200px"
-            android:layout_height="200px" />
-        </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_invert_colors_black_24dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="0%"
+                android:id="@+id/humidity_tv"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_network_check_black_24dp"/>
+            <TextView
+                android:id="@+id/min_max_temp_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="0° 50°"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_toys_black_24dp"/>
+            <TextView
+                android:id="@+id/wind_speed_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="0 m/s"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
     </LinearLayout>
-        <TextView
-            android:id="@+id/temp_city_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Temp" />
-    </LinearLayout>
-
 </LinearLayout>
