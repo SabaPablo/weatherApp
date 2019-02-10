@@ -3,8 +3,11 @@ package com.example.saba.weatherapp.views
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.TextView
 import com.example.saba.weatherapp.R
+import com.example.saba.weatherapp.adapters.WeathersAdapter
+import com.example.saba.weatherapp.model.Weather
 import com.example.saba.weatherapp.services.WeatherService
 import com.squareup.picasso.Picasso
 
@@ -65,4 +68,15 @@ class MainActivity : AppCompatActivity() , MainView {
     override fun velocityWind(speed: Int?) {
         val wind_speed_tv = findViewById<TextView>(R.id.wind_speed_tv)
         wind_speed_tv.text = "$speed m/s"    }
+
+    override fun renderfiveDays(weathers: MutableMap<String, Weather>) {
+        val listv = findViewById<ListView>(R.id.five_days_weather_lv)
+        val list : ArrayList<Pair<String,Weather>> = ArrayList()
+        weathers.forEach { (s, w) ->  list.add(Pair(s,w))}
+        listv.adapter = WeathersAdapter(this,list)
+
+
+
+    }
+
 }
