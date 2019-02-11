@@ -1,6 +1,7 @@
 package com.example.saba.weatherapp.adapters
 
 import android.content.Context
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -41,14 +42,18 @@ class WeathersAdapter : BaseAdapter {
         val inputDate = SimpleDateFormat("yyyy-MM-dd").parse(pair.first)
         val calendar = Calendar.getInstance()
         calendar.setTime(inputDate)
-        val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US).toUpperCase()
+        val esLocale = Locale("es", "ES")
+        val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, esLocale)
+        val minTemp = pair.second.main!!.temp_min!!.toInt().toString()
+        val maxTemp = pair.second.main!!.temp_max!!.toInt().toString()
+        //vh.temp.text = pair.second.main!!.temp_min!!.toInt().toString() + "° " + pair.second.main!!.temp_max!!.toInt().toString() + "°"
+        vh.temp.text = "$minTemp°/$maxTemp°"
 
-        vh.temp.text = pair.second.main!!.temp_min!!.toInt().toString() + "° " + pair.second.main!!.temp_max!!.toInt().toString() + "°"
-        vh.nameDay.text = dayOfWeek
+        vh.nameDay.text = dayOfWeek.capitalize()
         val icon = pair.second.weather!![0].icon
         Picasso.get()
                 .load("http://openweathermap.org/img/w/$icon.png")
-                .into(vh.imageView);
+                .into(vh.imageView)
 
 
         return view

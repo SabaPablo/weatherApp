@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() , MainView {
         val imageView = findViewById<ImageView>(R.id.icon_weather_im)
         Picasso.get()
                 .load("http://openweathermap.org/img/w/$img.png")
+                .resize(200, 200)
                 .into(imageView);
     }
 

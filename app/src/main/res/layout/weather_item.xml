@@ -2,20 +2,26 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <ImageView
         android:id="@+id/icon_item_weather_iv"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_weight="1" />
     <TextView
         android:id="@+id/name_day_tv"
         android:layout_weight="4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimaryText"
         />
     <TextView
         android:id="@+id/temp_tv"
         android:layout_width="0dp"
         android:layout_weight="2"
-        android:layout_height="wrap_content" />
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        />
 </LinearLayout>
