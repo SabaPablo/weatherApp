@@ -19,7 +19,7 @@ public interface MainView {
 
     void renderIcon(@NotNull String img);
 
-    void renderCountryAndProvince(@Nullable String region, @Nullable String country);
+    void renderCountryAndProvince(@Nullable String region);
 
     void renderStatusWeather(@Nullable String description);
 

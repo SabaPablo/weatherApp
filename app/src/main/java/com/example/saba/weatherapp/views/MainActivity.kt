@@ -4,21 +4,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import com.example.saba.weatherapp.R
 import com.example.saba.weatherapp.adapters.WeatherWorldAdapter
 import com.example.saba.weatherapp.adapters.WeathersAdapter
 import com.example.saba.weatherapp.model.Weather
-import com.example.saba.weatherapp.services.WeatherService
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() , MainView {
 
 
     private lateinit var mainPresenter: MainPresenter
-    var weatherService:WeatherService?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +25,12 @@ class MainActivity : AppCompatActivity() , MainView {
         mainPresenter.getWeatherOf(null)
         mainPresenter.getWeathersDefaults()
 
-
+        val searchEdit = findViewById<EditText>(R.id.city_search_tv)
+        val searchBtn = findViewById<ImageButton>(R.id.search_btn)
+        searchBtn.setOnClickListener {
+            if(!searchEdit.text.isEmpty())
+                mainPresenter.getWeatherOf(searchEdit.text.toString())
+        }
 
 
     }
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() , MainView {
         Picasso.get()
                 .load("http://openweathermap.org/img/w/$img.png")
                 .resize(200, 200)
-                .into(imageView);
+                .into(imageView)
     }
 
     override fun renderCityName(name: String?) {
@@ -53,9 +54,9 @@ class MainActivity : AppCompatActivity() , MainView {
 
     }
 
-    override fun renderCountryAndProvince(region: String?, country: String?) {
-        val country_tv = findViewById<TextView>(R.id.country_name_tv)
-        country_tv.text = "$region, $country"
+    override fun renderCountryAndProvince(region: String?) {
+        val countryNameTextView = findViewById<TextView>(R.id.country_name_tv)
+        countryNameTextView.text = "$region"
     }
 
     override fun renderStatusWeather(description: String?) {
@@ -65,16 +66,16 @@ class MainActivity : AppCompatActivity() , MainView {
     }
 
     override fun renderHumidity(humidity: Int?) {
-        val humidity_tv = findViewById<TextView>(R.id.humidity_tv)
-        humidity_tv.text = "$humidity%"}
+        val humidityTextView = findViewById<TextView>(R.id.humidity_tv)
+        humidityTextView.text = "$humidity%"}
 
     override fun renderMinAndMaxTemp(min: Int?, max: Int?) {
-        val min_max_temp_tv = findViewById<TextView>(R.id.min_max_temp_tv)
-        min_max_temp_tv.text = "$min°/$max°"    }
+        val maxMinTextView = findViewById<TextView>(R.id.min_max_temp_tv)
+        maxMinTextView.text = "$min°/$max°"    }
 
     override fun velocityWind(speed: Int?) {
-        val wind_speed_tv = findViewById<TextView>(R.id.wind_speed_tv)
-        wind_speed_tv.text = "$speed m/s"    }
+        val windSpeedTextView = findViewById<TextView>(R.id.wind_speed_tv)
+        windSpeedTextView.text = "$speed m/s"    }
 
     override fun renderfiveDays(weathers: MutableMap<String, Weather>) {
         val listv = findViewById<ListView>(R.id.five_days_weather_lv)

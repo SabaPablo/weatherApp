@@ -37,7 +37,7 @@ class MainPresenter(mainView: MainView) {
 
     private fun getWeatherByUbication(ubication: Ubication?) {
         if (ubication != null) {
-            mainView.renderCountryAndProvince(ubication.region, ubication.country)
+            mainView.renderCountryAndProvince(ubication.region + ", " + ubication.country)
         }
         getWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble(),null)
         getfiveDaysWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble(),null)
@@ -76,7 +76,7 @@ class MainPresenter(mainView: MainView) {
         }
 
     fun  getWeather(lat: Double?, lon: Double?, city: String?) {
-        var call = service!!.getWeather(lat!!, lon!!, city)
+        var call = service!!.getWeather(lat, lon, city)
         call.enqueue(object : Callback<Weather>{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
                 renderWeather(response!!.body()!!)
@@ -105,6 +105,9 @@ class MainPresenter(mainView: MainView) {
         }else{
             getWeather(null,null, city)
             getfiveDaysWeather(null,null,city)
+            mainView.renderCountryAndProvince("")
+
+
         }
     }
 

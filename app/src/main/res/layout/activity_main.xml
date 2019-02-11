@@ -1,7 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="fill_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
     <LinearLayout
@@ -9,6 +9,25 @@
         android:orientation="vertical"
         android:background="@color/colorPrimarylight"
         android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <EditText
+            android:id="@+id/city_search_tv"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:lines="1"
+            android:hint="@string/put_a_city"/>
+        <ImageButton
+            android:id="@+id/search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search_black_24dp"/>
+        </LinearLayout>
     <TextView
         android:id="@+id/city_name_tv"
         android:layout_width="match_parent"
@@ -128,7 +147,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
         <ListView
             android:id="@+id/five_days_weather_lv"
@@ -137,7 +156,10 @@
 
         </ListView>
     </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/weather_world_rv"
         android:layout_width="match_parent"
@@ -146,4 +168,5 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:listitem="@layout/weather_card_view">
     </android.support.v7.widget.RecyclerView>
+</LinearLayout>
 </LinearLayout>

@@ -3,8 +3,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="3dp"
-    android:background="@color/colorPrimarylight"
-
+    android:background="@drawable/border"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -14,18 +13,23 @@
         android:layout_height="wrap_content"
         android:text="city" />
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/temp_city_tv"
             android:text="0°"
             android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textAlignment="textEnd"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end" />
         <ImageView
             android:id="@+id/icon_weather_iv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="left"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
