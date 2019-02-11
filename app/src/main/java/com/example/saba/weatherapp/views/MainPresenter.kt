@@ -1,17 +1,17 @@
 package com.example.saba.weatherapp.views
 
 import android.util.Log
+import com.example.saba.weatherapp.R
 import com.example.saba.weatherapp.application.AppAplication
 import com.example.saba.weatherapp.model.FiveDaysWeather
-import com.example.saba.weatherapp.model.Icons
 import com.example.saba.weatherapp.model.Ubication
 import com.example.saba.weatherapp.model.Weather
 import com.example.saba.weatherapp.services.IpLocationService
 import com.example.saba.weatherapp.services.WeatherService
-import org.joda.time.DateTime
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.coroutineContext
 
 class MainPresenter(mainView: MainView) {
 
@@ -39,12 +39,12 @@ class MainPresenter(mainView: MainView) {
         if (ubication != null) {
             mainView.renderCountryAndProvince(ubication.region, ubication.country)
         }
-        getWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble())
-        getfiveDaysWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble())
+        getWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble(),null)
+        getfiveDaysWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble(),null)
     }
 
-        private fun getfiveDaysWeather(lat: Double, lon: Double) {
-            var call = service!!.getFiveDaysWeather(lat,lon)
+        private fun getfiveDaysWeather(lat: Double?, lon: Double?,city: String?) {
+            var call = service!!.getFiveDaysWeather(lat,lon,city)
             call.enqueue(object  : Callback<FiveDaysWeather>{
                 override fun onFailure(call: Call<FiveDaysWeather>, t: Throwable) {
                     Log.v("retrofit", "weather call failed")
@@ -75,8 +75,8 @@ class MainPresenter(mainView: MainView) {
             mainView.renderfiveDays(weathers)
         }
 
-    fun  getWeather(lat: Double?, lon: Double?) {
-        var call = service!!.getWeather(lat!!, lon!!)
+    fun  getWeather(lat: Double?, lon: Double?, city: String?) {
+        var call = service!!.getWeather(lat!!, lon!!, city)
         call.enqueue(object : Callback<Weather>{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
                 renderWeather(response!!.body()!!)
@@ -99,5 +99,54 @@ class MainPresenter(mainView: MainView) {
 
     }
 
+    fun getWeatherOf(city: String?) {
+        if(city == null){
+            getWeatherWithIp()
+        }else{
+            getWeather(null,null, city)
+            getfiveDaysWeather(null,null,city)
+        }
+    }
+
+    fun getWeathersDefaults() {
+        val strings = hashSetOf("Madrid", "Paris", "Nueva York", "Tokio", "Roma")
+        val res = mutableListOf<Weather>()
+        val ite = strings.iterator()
+       callWeather(ite,res)
+    }
+
+    private fun callWeather(ite: MutableIterator<String>, res: MutableList<Weather>) {
+        var call = service!!.getWeather(null, null, ite.next())
+        call.enqueue(object : Callback<Weather>{
+            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+                res.add(response!!.body()!!)
+                if(ite.hasNext())
+                    callWeather(ite,res)
+                else
+                    renderWorldWeather(res)
+            }
+
+            override fun onFailure(call: Call<Weather>, t: Throwable) {
+                Log.v("retrofit", "weather call failed")
+            }
+        })
+    }
+
+    private fun renderWorldWeather(res: MutableList<Weather>) {
+        mainView.renderWorldWeather(res)
+    }
+
+    fun  getWeather(city: String?) {
+        var call = service!!.getWeather(null, null, city)
+        call.enqueue(object : Callback<Weather>{
+            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+                renderWeather(response!!.body()!!)
+            }
+
+            override fun onFailure(call: Call<Weather>, t: Throwable) {
+                Log.v("retrofit", "weather call failed")
+            }
+        })
+    }
 
 }

@@ -2,16 +2,20 @@ package com.example.saba.weatherapp.views
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import com.example.saba.weatherapp.R
+import com.example.saba.weatherapp.adapters.WeatherWorldAdapter
 import com.example.saba.weatherapp.adapters.WeathersAdapter
 import com.example.saba.weatherapp.model.Weather
 import com.example.saba.weatherapp.services.WeatherService
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() , MainView {
+
 
     private lateinit var mainPresenter: MainPresenter
     var weatherService:WeatherService?=null
@@ -22,7 +26,9 @@ class MainActivity : AppCompatActivity() , MainView {
 
         mainPresenter = MainPresenter(this)
 
-        mainPresenter.getWeatherWithIp()
+        mainPresenter.getWeatherOf(null)
+        mainPresenter.getWeathersDefaults()
+
 
 
 
@@ -64,7 +70,7 @@ class MainActivity : AppCompatActivity() , MainView {
 
     override fun renderMinAndMaxTemp(min: Int?, max: Int?) {
         val min_max_temp_tv = findViewById<TextView>(R.id.min_max_temp_tv)
-        min_max_temp_tv.text = "$min° $max°"    }
+        min_max_temp_tv.text = "$min°/$max°"    }
 
     override fun velocityWind(speed: Int?) {
         val wind_speed_tv = findViewById<TextView>(R.id.wind_speed_tv)
@@ -76,8 +82,11 @@ class MainActivity : AppCompatActivity() , MainView {
         weathers.forEach { (s, w) ->  list.add(Pair(s,w))}
         listv.adapter = WeathersAdapter(this,list)
 
-
-
     }
-
+    override fun renderWorldWeather(res: MutableList<Weather>) {
+        val listv = findViewById<RecyclerView>(R.id.weather_world_rv)
+        val linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        listv.layoutManager = linearLayoutManager
+        listv.adapter = WeatherWorldAdapter(ArrayList(res), this)
+    }
 }

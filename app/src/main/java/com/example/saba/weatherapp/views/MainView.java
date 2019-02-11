@@ -8,6 +8,7 @@ import com.example.saba.weatherapp.model.Weather;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,4 +31,5 @@ public interface MainView {
 
     void renderfiveDays(@NotNull Map<String, Weather> weathers);
 
+    void renderWorldWeather(@NotNull List<Weather> res);
 }

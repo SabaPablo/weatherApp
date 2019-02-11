@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="countrys_default">
+        <item>Madrid</item>
+        <item>Paris</item>
+        <item>Nueva York</item>
+        <item>Roma</item>
+        <item>Tokio</item>
+    </string-array>
+</resources>

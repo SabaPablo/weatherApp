@@ -41,7 +41,7 @@ class WeathersAdapter : BaseAdapter {
         val pair = weatherList!![position]
         val inputDate = SimpleDateFormat("yyyy-MM-dd").parse(pair.first)
         val calendar = Calendar.getInstance()
-        calendar.setTime(inputDate)
+        calendar.time = inputDate
         val esLocale = Locale("es", "ES")
         val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, esLocale)
         val minTemp = pair.second.main!!.temp_min!!.toInt().toString()
@@ -77,8 +77,8 @@ class WeathersAdapter : BaseAdapter {
 
         init {
             this.temp = view?.findViewById(R.id.temp_tv) as TextView
-            this.nameDay = view?.findViewById(R.id.name_day_tv) as TextView
-            this.imageView = view?.findViewById(R.id.icon_item_weather_iv)
+            this.nameDay = view.findViewById(R.id.name_day_tv) as TextView
+            this.imageView = view.findViewById(R.id.icon_item_weather_iv)
         }
     }
 

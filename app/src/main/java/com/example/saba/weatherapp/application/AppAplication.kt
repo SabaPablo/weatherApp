@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.saba.weatherapp.services.IpLocationService
 import com.example.saba.weatherapp.services.WeatherInterceptor
 import com.example.saba.weatherapp.services.WeatherService
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,6 +29,7 @@ class AppAplication : Application() {
         var retrofitOpenWeather = Retrofit.Builder().apply{
             baseUrl("https://api.openweathermap.org/").
                     addConverterFactory(GsonConverterFactory.create())
+                addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             client(apiClient)
         }.build()
         weatherService = retrofitOpenWeather.create(WeatherService::class.java)
