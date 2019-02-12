@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.WindowManager
 import android.widget.*
 import com.example.saba.weatherapp.R
 import com.example.saba.weatherapp.adapters.WeatherWorldAdapter
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() , MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         mainPresenter = MainPresenter(this)
 
         mainPresenter.getWeatherOf(null)
@@ -28,8 +29,7 @@ class MainActivity : AppCompatActivity() , MainView {
         val searchEdit = findViewById<EditText>(R.id.city_search_tv)
         val searchBtn = findViewById<ImageButton>(R.id.search_btn)
         searchBtn.setOnClickListener {
-            if(!searchEdit.text.isEmpty())
-                mainPresenter.getWeatherOf(searchEdit.text.toString())
+            mainPresenter.getWeatherOf(searchEdit.text.toString())
         }
 
 

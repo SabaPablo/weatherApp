@@ -123,7 +123,7 @@ class MainPresenter(mainView: MainView) {
     }
 
     fun getWeatherOf(city: String?) {
-        if(city == null){
+        if(city == null || city.isEmpty()){
             getWeatherWithIp()
         }else{
             getWeather(null,null, city)
