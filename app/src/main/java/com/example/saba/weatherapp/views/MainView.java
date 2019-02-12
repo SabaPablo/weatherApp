@@ -38,4 +38,6 @@ public interface MainView {
     void setErrorServerNotFound();
 
     void setAnyError();
+
+    void setErrorAPI();
 }

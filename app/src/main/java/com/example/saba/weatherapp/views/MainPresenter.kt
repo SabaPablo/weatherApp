@@ -1,59 +1,56 @@
 package com.example.saba.weatherapp.views
 
 import android.util.Log
-import com.example.saba.weatherapp.R
 import com.example.saba.weatherapp.application.AppAplication
 import com.example.saba.weatherapp.model.FiveDaysWeather
-import com.example.saba.weatherapp.model.Ubication
+import com.example.saba.weatherapp.model.Location
 import com.example.saba.weatherapp.model.Weather
 import com.example.saba.weatherapp.services.IpLocationService
 import com.example.saba.weatherapp.services.WeatherService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.reflect.Type
-import java.util.*
 
 class MainPresenter(mainView: MainView) {
 
     val mainView: MainView = mainView
-    val service : WeatherService? = AppAplication.instance.weatherService;
-    val ipLocationService : IpLocationService? = AppAplication.instance.ipLocationService;
+    private val service : WeatherService? = AppAplication.instance.weatherService
+    private val ipLocationService : IpLocationService? = AppAplication.instance.ipLocationService
 
 
     fun getWeatherWithIp(){
-        var call = ipLocationService!!.getUbication()
-        call.enqueue(object : Callback<Ubication>{
-            override fun onFailure(call: Call<Ubication>, t: Throwable) {
-                Log.v("retrofit", "ip ubication call failed")
+        val call = ipLocationService!!.getLocation()
+        call.enqueue(object : Callback<Location>{
+            override fun onFailure(call: Call<Location>, t: Throwable) {
+                failRetrofit()
             }
 
-            override fun onResponse(call: Call<Ubication>, response: Response<Ubication>) {
-                getWeatherByUbication(response.body())
+            override fun onResponse(call: Call<Location>, response: Response<Location>) {
+                getWeatherByLocation(response.body())
 
             }
 
         })
     }
 
-    private fun getWeatherByUbication(ubication: Ubication?) {
-        if (ubication != null) {
-            mainView.renderCountryAndProvince(ubication.region + ", " + ubication.country)
+    private fun getWeatherByLocation(location: Location?) {
+        if (location != null) {
+            mainView.renderCountryAndProvince(location.region + ", " + location.country)
         }
-        getWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble(),null)
-        getfiveDaysWeather(ubication!!.latitude!!.toDouble(), ubication!!.longitude!!.toDouble(),null)
+        getWeather(location!!.latitude!!.toDouble(), location.longitude!!.toDouble(),null)
+        getfiveDaysWeather(location.latitude!!.toDouble(), location.longitude!!.toDouble(),null)
     }
 
         private fun getfiveDaysWeather(lat: Double?, lon: Double?,city: String?) {
-            var call = service!!.getFiveDaysWeather(lat,lon,city)
+            val call = service!!.getFiveDaysWeather(lat,lon,city)
             call.enqueue(object  : Callback<FiveDaysWeather>{
                 override fun onFailure(call: Call<FiveDaysWeather>, t: Throwable) {
-                    Log.v("retrofit", "weather call failed")
+                    failRetrofit()
                 }
 
                 override fun onResponse(call: Call<FiveDaysWeather>, response: Response<FiveDaysWeather>) {
                     if (response.isSuccessful) {
-                        renderFiveWeathers(response!!.body()!!)
+                        renderFiveWeathers(response.body()!!)
                     } else {
                         handleError(response)
 
@@ -74,7 +71,7 @@ class MainPresenter(mainView: MainView) {
     private fun renderFiveWeathers(fiveDaysWeather: FiveDaysWeather) {
             val weathers : MutableMap<String,Weather> = mutableMapOf()
             fiveDaysWeather.list!!.iterator().forEach { w ->
-                var aRange = w.dt_txt!!.removeRange(10,19)
+                val aRange = w.dt_txt!!.removeRange(10,19)
                 if(!weathers.containsKey(aRange))
                     weathers[aRange] = Weather()
                 if(weathers[aRange]!!.main == null){
@@ -91,24 +88,24 @@ class MainPresenter(mainView: MainView) {
         }
 
     fun  getWeather(lat: Double?, lon: Double?, city: String?) {
-        var call = service!!.getWeather(lat, lon, city)
+        val call = service!!.getWeather(lat, lon, city)
         call.enqueue(object : Callback<Weather>{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
                 if (response.isSuccessful) {
-                    renderWeather(response!!.body()!!)
+                    renderWeather(response.body()!!)
                 } else {
                     handleError(response)
-
                 }
-
-
-
             }
-
-            override fun onFailure(call: Call<Weather>, t: Throwable) {
-                Log.v("retrofit", "weather call failed")
+            override fun onFailure(call: Call<Weather>,     t: Throwable) {
+               failRetrofit()
             }
         })
+    }
+
+    private fun failRetrofit() {
+        Log.v("retrofit", "weather call failed")
+        mainView.setErrorAPI()
     }
 
     private fun renderWeather(weather: Weather) {
@@ -142,10 +139,10 @@ class MainPresenter(mainView: MainView) {
     }
 
     private fun callWeather(ite: MutableIterator<String>, res: MutableList<Weather>) {
-        var call = service!!.getWeather(null, null, ite.next())
+        val call = service!!.getWeather(null, null, ite.next())
         call.enqueue(object : Callback<Weather>{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-                res.add(response!!.body()!!)
+                res.add(response.body()!!)
                 if(ite.hasNext())
                     callWeather(ite,res)
                 else
@@ -153,26 +150,13 @@ class MainPresenter(mainView: MainView) {
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
-                Log.v("retrofit", "weather call failed")
+                failRetrofit()
             }
         })
     }
 
     private fun renderWorldWeather(res: MutableList<Weather>) {
         mainView.renderWorldWeather(res)
-    }
-
-    fun  getWeather(city: String?) {
-        var call = service!!.getWeather(null, null, city)
-        call.enqueue(object : Callback<Weather>{
-            override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-                renderWeather(response!!.body()!!)
-            }
-
-            override fun onFailure(call: Call<Weather>, t: Throwable) {
-                Log.v("retrofit", "weather call failed")
-            }
-        })
     }
 
 }

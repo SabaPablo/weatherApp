@@ -15,14 +15,16 @@ import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() , MainView {
 
+
     private lateinit var mainPresenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-        mainPresenter = MainPresenter(this)
 
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
+        mainPresenter = MainPresenter(this)
         mainPresenter.getWeatherOf(null)
         mainPresenter.getWeathersDefaults()
 
@@ -85,10 +87,12 @@ class MainActivity : AppCompatActivity() , MainView {
 
     }
     override fun renderWorldWeather(res: MutableList<Weather>) {
-        val listv = findViewById<RecyclerView>(R.id.weather_world_rv)
+        val recyclerView = findViewById<RecyclerView>(R.id.weather_world_rv)
         val linearLayoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        listv.layoutManager = linearLayoutManager
-        listv.adapter = WeatherWorldAdapter(ArrayList(res), this)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = WeatherWorldAdapter(ArrayList(res)){
+            i ->  mainPresenter.getWeatherOf(res[i].name)
+        }
     }
     override fun setErrorCityNotFound() {
         val builder = AlertDialog.Builder(this)
@@ -107,6 +111,10 @@ class MainActivity : AppCompatActivity() , MainView {
         builder.setMessage("Ocurrio un error inesperado").show()
    }
 
-
+    override fun setErrorAPI() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage("Ocurrio un error inesperado").show()    }
 
 }
+

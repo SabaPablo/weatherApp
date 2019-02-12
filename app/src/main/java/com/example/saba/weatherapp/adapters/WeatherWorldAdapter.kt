@@ -12,15 +12,9 @@ import com.example.saba.weatherapp.model.Weather
 import com.squareup.picasso.Picasso
 import kotlin.collections.ArrayList
 
-class WeatherWorldAdapter(worldWeather: ArrayList<Weather>,context: Context): RecyclerView.Adapter<WeatherWorldAdapter.ViewHolder>() {
+class WeatherWorldAdapter(worldWeather: ArrayList<Weather>, private val listener: (Int) -> Unit): RecyclerView.Adapter<WeatherWorldAdapter.ViewHolder>() {
 
-    var worldWeather : ArrayList<Weather>? = null
-    var context : Context? = null
-
-    init {
-        this.worldWeather = worldWeather
-        this.context = context
-    }
+    private var worldWeather : ArrayList<Weather> = worldWeather
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.weather_card_view, parent, false))
@@ -30,38 +24,35 @@ class WeatherWorldAdapter(worldWeather: ArrayList<Weather>,context: Context): Re
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       holder.bindItems(worldWeather!![position])        }
+       holder.bindItems(worldWeather[position],position, listener)
+       holder.setIsRecyclable(false);}
 
 
 
     class ViewHolder (view: View?) : RecyclerView.ViewHolder(view) {
 
-        fun bindItems(weather: Weather) {
-            name_city.text= weather.name
-            temp_city.text = weather.main!!.temp!!.toInt().toString() + "°"
+        fun bindItems(weather: Weather,pos: Int, listener: (Int) -> Unit) = with(itemView) {
+            nameCity.text= weather.name
+            tempCity.text = weather.main!!.temp!!.toInt().toString() + "°"
 
             val icon = weather.weather!![0].icon
             Picasso.get()
                     .load("http://openweathermap.org/img/w/$icon.png")
                     .into(imageView)
 
+            nameCity.setOnClickListener {
+                listener(pos)}
 
         }
 
-        val imageView: ImageView
-        val name_city: TextView
-        val temp_city: TextView
+        private val imageView: ImageView = view?.findViewById(R.id.icon_weather_iv)!!
+        private val nameCity: TextView = view?.findViewById(R.id.name_city_tv) as TextView
+        private val tempCity: TextView = view?.findViewById(R.id.temp_city_tv) as TextView
 
-        init {
-            this.temp_city = view?.findViewById(R.id.temp_city_tv) as TextView
-            this.name_city = view?.findViewById(R.id.name_city_tv) as TextView
-            this.imageView = view?.findViewById(R.id.icon_weather_iv)
-        }
+    }
 
 
     }
 
 
-
-}
 
