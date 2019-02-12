@@ -2,6 +2,7 @@ package com.example.saba.weatherapp.views
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.*
@@ -12,7 +13,6 @@ import com.example.saba.weatherapp.model.Weather
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() , MainView {
-
 
     private lateinit var mainPresenter: MainPresenter
 
@@ -90,4 +90,23 @@ class MainActivity : AppCompatActivity() , MainView {
         listv.layoutManager = linearLayoutManager
         listv.adapter = WeatherWorldAdapter(ArrayList(res), this)
     }
+    override fun setErrorCityNotFound() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage("No se encontro la ciudad seleccionada").show()
+    }
+
+    override fun setErrorServerNotFound() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage("No con el servidor").show()    }
+
+    override fun setAnyError() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage("Ocurrio un error inesperado").show()
+   }
+
+
+
 }

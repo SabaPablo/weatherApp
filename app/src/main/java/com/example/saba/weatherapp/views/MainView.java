@@ -32,4 +32,10 @@ public interface MainView {
     void renderfiveDays(@NotNull Map<String, Weather> weathers);
 
     void renderWorldWeather(@NotNull List<Weather> res);
+
+    void setErrorCityNotFound();
+
+    void setErrorServerNotFound();
+
+    void setAnyError();
 }

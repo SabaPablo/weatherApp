@@ -11,7 +11,8 @@ import com.example.saba.weatherapp.services.WeatherService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.coroutines.coroutineContext
+import java.lang.reflect.Type
+import java.util.*
 
 class MainPresenter(mainView: MainView) {
 
@@ -51,12 +52,26 @@ class MainPresenter(mainView: MainView) {
                 }
 
                 override fun onResponse(call: Call<FiveDaysWeather>, response: Response<FiveDaysWeather>) {
-                    renderFiveWeathers(response!!.body()!!)
+                    if (response.isSuccessful) {
+                        renderFiveWeathers(response!!.body()!!)
+                    } else {
+                        handleError(response)
+
+                    }
+
                 }
             })
         }
 
-        private fun renderFiveWeathers(fiveDaysWeather: FiveDaysWeather) {
+    private fun <T> handleError(response: Response<T>) {
+        when (response.code()) {
+            404 -> mainView.setErrorCityNotFound()
+            500 -> mainView.setErrorServerNotFound()
+            else -> mainView.setAnyError()
+        }
+    }
+
+    private fun renderFiveWeathers(fiveDaysWeather: FiveDaysWeather) {
             val weathers : MutableMap<String,Weather> = mutableMapOf()
             fiveDaysWeather.list!!.iterator().forEach { w ->
                 var aRange = w.dt_txt!!.removeRange(10,19)
@@ -79,7 +94,15 @@ class MainPresenter(mainView: MainView) {
         var call = service!!.getWeather(lat, lon, city)
         call.enqueue(object : Callback<Weather>{
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-                renderWeather(response!!.body()!!)
+                if (response.isSuccessful) {
+                    renderWeather(response!!.body()!!)
+                } else {
+                    handleError(response)
+
+                }
+
+
+
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
