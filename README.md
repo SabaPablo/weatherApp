@@ -18,11 +18,11 @@ Lenguaje : Kotlin
 * [Picasso](http://square.github.io/picasso/) - Gestor de imagenes
 
 ## Desenlace de la aplicación
-El desarrollo cumple con las funcionalidades principales, logre consumir los datos y 
+El desarrollo cumple con las funcionalidades principales, logré consumir los datos y 
 parsearlos para presentarlos en la aplicación.
-La aplicación esta armada con el patrón de arquitectura MVP(Model, View, Presenter).
+La aplicación está armada con el patrón de arquitectura MVP(Model, View, Presenter).
 
-Implemente la clase AppAplication que extiende de Aplication y es donde se configuran los 
+Implementé la clase AppAplication que extiende de Aplication y es donde se configuran los 
 servicios, donde también están disponibles para los activities que lo requieran. 
 
 ### Items a Mejorar
