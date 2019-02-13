@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface IpLocationService {
 
-    @GET("json/")
+    @GET("json/?lang=es")
     fun getLocation() : Call<Location>
 }
